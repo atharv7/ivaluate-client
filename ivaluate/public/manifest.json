@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "iValuate",
+  "name": "iValuate - Evaluation Tool for Codaisseur",
   "icons": [
     {
       "src": "favicon.ico",
