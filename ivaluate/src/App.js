@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route, Redirect,Link } from 'react-router-dom'
 import FrontPage from './containers/frontPage'
 import logoutPage from './components/logout/logoutPage';
 import {connect} from 'react-redux'
+import batchesList from './components/batches/batchesList';
 
 
 class App extends Component {
@@ -22,6 +23,7 @@ class App extends Component {
           <div>
           <Route exact path="/home" component={FrontPage} />
           <Route exact path="/logout" component={logoutPage} />
+          <Route exact path="/batches" component={batchesList} />
           <Route exact path="/" render={ () => <Redirect to="/home" /> } />
           </div>
         
