@@ -64,6 +64,7 @@ const updateStudents = students => ({
     const state = getState()
     const jwt = state.currentUser.jwt
     if (isExpired(jwt)) return dispatch(logout())
+    
     request
       .delete(`${baseUrl}/students/${id}`)
       .set('Authorization', `Bearer ${jwt}`)
