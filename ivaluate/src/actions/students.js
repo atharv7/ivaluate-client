@@ -59,3 +59,14 @@ const updateStudents = students => ({
       .then(result => dispatch(getStudents(result.body.batch)))
       .catch(err => console.error(err))
   }
+
+  export const deleteStudent = (id) => (dispatch, getState) => {
+    const state = getState()
+    const jwt = state.currentUser.jwt
+    if (isExpired(jwt)) return dispatch(logout())
+    request
+      .delete(`${baseUrl}/students/${id}`)
+      .set('Authorization', `Bearer ${jwt}`)
+      .then(result => dispatch(getStudents(result.body.batch)))
+      .catch(err => console.error(err))
+  }

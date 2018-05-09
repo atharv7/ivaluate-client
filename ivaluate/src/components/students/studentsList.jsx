@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {getStudents, createStudent,editStudent} from '../../actions/students'
+import {getStudents, createStudent,editStudent,deleteStudent} from '../../actions/students'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 
@@ -12,7 +12,7 @@ class StudentsList extends PureComponent {
 
 
   renderStudent = (student) => {
-    const {editStudent} = this.props
+    const {editStudent,deleteStudent} = this.props
     const toggleForm = id => {
       document.getElementById(id+'_editform')
                             .style
@@ -31,6 +31,12 @@ class StudentsList extends PureComponent {
               value="edit" 
               onClick={
                 ()=>toggleForm(student.id)} />
+                <input
+              id={student.id + '_delete'}
+              type="button" 
+              value="delete" 
+              onClick={
+                ()=>deleteStudent(student.id)} />
 
           <form id={student.id+'_editform'} style={{display:'none'}}>
       <input type="text" id={student.id + "_editfullname"} placeholder="Full Name"/>
@@ -88,4 +94,4 @@ const mapStateToProps = state => ({
   students: state.students === null ? null : Object.values(state.students).sort((a, b) => b.id - a.id)
 })
 
-export default connect(mapStateToProps, {getStudents, createStudent, editStudent})(StudentsList)
+export default connect(mapStateToProps, {getStudents, createStudent, editStudent,deleteStudent})(StudentsList)
