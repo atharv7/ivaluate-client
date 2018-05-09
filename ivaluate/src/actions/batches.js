@@ -30,15 +30,16 @@ const updateBatches = batches => ({
       .catch(err => console.error(err))
   }
 
-  export const createBatch = () => (dispatch, getState) => {
+  export const createBatch = (batch,starts,ends) => (dispatch, getState) => {
     const state = getState()
     const jwt = state.currentUser.jwt
   
     if (isExpired(jwt)) return dispatch(logout())
-  
+    
     request
-      .post(`${baseUrl}/games`)
+      .post(`${baseUrl}/batches`)
       .set('Authorization', `Bearer ${jwt}`)
+      .send({ batch: batch, starts: starts, ends: ends})
       .then(result => dispatch(addBatch(result.body)))
       .catch(err => console.error(err))
   }

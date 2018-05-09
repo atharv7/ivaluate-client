@@ -1,16 +1,8 @@
 /* eslint no-restricted-globals: ["off", "location"] */
 import React, {PureComponent} from 'react'
 import {getBatches, createBatch} from '../../actions/batches'
-import {getUsers} from '../../actions/users'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
-
-// import Button from 'material-ui/Button'
-// import Paper from 'material-ui/Paper'
-// import Card, { CardActions, CardContent } from 'material-ui/Card'
-// import Typography from 'material-ui/Typography'
-
-// import './BatchesList.css'
 
 class BatchesList extends PureComponent {
   componentWillMount() {
@@ -20,26 +12,27 @@ class BatchesList extends PureComponent {
   }
 
   renderBatch = (batch) => {
-    const {starts,ends} = this.props
 
     return (<div>
-          Starts: {batch.starts} | Ends: {batch.ends}
-            <br/>
+      
           Batch #{batch.batch}
+          <br/>
+          Starts: {batch.starts} | Ends: {batch.ends}
+            
         
       
             <br/>
         <input type="button" value="VIEW"
           size="small"
-          onClick={() => {history.push(`/batches/${batch.id}`)}}
-        />
+          onClick={() => {this.props.history.push(`/batches/${batch.id}`)}}
+        /><hr/>
         </div>
       )
   }
 
   render() {
     const {batches, authenticated, createBatch} = this.props
-
+    
     if (!authenticated) return (
 			<Redirect to="/home" />
 		)
@@ -47,12 +40,20 @@ class BatchesList extends PureComponent {
     if (batches === null) return null
 
     return (<div><div className="outer-paper">
+      <input type="number" id="batch" placeholder="Batch #" />
+      <input type="text" id="starts" placeholder="Starts" />
+      <input type="text" id="ends" placeholder="Ends" />
       <input type="button" value="New Batch"
         color="primary"
         variant="raised"
-        onClick={createBatch}
+        onClick={()=>createBatch(document.getElementById('batch').value,
+                              document.getElementById('starts').value,
+                              document.getElementById('ends').value)}
         className="create-batch"
       />
+      <div className="create-batch-form">
+
+      </div>
 </div><div>
         {batches.map(batch => this.renderBatch(batch))}
       </div>
