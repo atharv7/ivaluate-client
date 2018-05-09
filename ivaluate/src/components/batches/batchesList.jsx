@@ -41,8 +41,8 @@ class BatchesList extends PureComponent {
 
     return (<div><div className="outer-paper">
       <input type="number" id="batch" placeholder="Batch #" />
-      <input type="text" id="starts" placeholder="Starts" />
-      <input type="text" id="ends" placeholder="Ends" />
+      <input type="date" id="starts" placeholder="Starts" />
+      <input type="date" id="ends" placeholder="Ends" />
       <input type="button" value="New Batch"
         color="primary"
         variant="raised"
