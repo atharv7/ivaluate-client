@@ -1,4 +1,4 @@
-/* eslint no-restricted-globals: ["off", "location"] */
+
 import React, {PureComponent} from 'react'
 import {getBatches, createBatch} from '../../actions/batches'
 import {connect} from 'react-redux'
@@ -24,7 +24,7 @@ class BatchesList extends PureComponent {
             <br/>
         <input type="button" value="VIEW"
           size="small"
-          onClick={() => {this.props.history.push(`/batches/${batch.id}`)}}
+          onClick={() => {this.props.history.push(`/batches/${batch.batch}`)}}
         /><hr/>
         </div>
       )
@@ -32,7 +32,6 @@ class BatchesList extends PureComponent {
 
   render() {
     const {batches, authenticated, createBatch} = this.props
-    
     if (!authenticated) return (
 			<Redirect to="/home" />
 		)
