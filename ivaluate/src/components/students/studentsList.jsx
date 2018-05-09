@@ -6,7 +6,7 @@ import {Redirect} from 'react-router-dom'
 class StudentsList extends PureComponent {
   componentWillMount() {
     if (this.props.authenticated) {
-      if (this.props.students === null) this.props.getStudents()
+      this.props.getStudents(this.props.match.params.id)
     }
   }
 
@@ -51,7 +51,7 @@ class StudentsList extends PureComponent {
 
       </div>
 </div><div>
-        {students.filter(student=>student.batch==this.props.match.params.id).map(student => this.renderStudent(student))}
+        {students.map(student => this.renderStudent(student))}
       </div>
       </div>
     )

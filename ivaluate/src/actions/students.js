@@ -16,15 +16,15 @@ const updateStudents = students => ({
     payload: students
 })
 
-  export const getStudents = () => (dispatch, getState) => {
+  export const getStudents = (batch) => (dispatch, getState) => {
     const state = getState()
     if (!state.currentUser) return null
     const jwt = state.currentUser.jwt
   
     if (isExpired(jwt)) return dispatch(logout())
-  
+    
     request
-      .get(`${baseUrl}/students/`)
+      .get(`${baseUrl}/students/${batch}/`)
       .set('Authorization', `Bearer ${jwt}`)
       .then(result => dispatch(updateStudents(result.body)))
       .catch(err => console.error(err))
