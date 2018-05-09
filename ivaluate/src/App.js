@@ -17,7 +17,9 @@ class App extends Component {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title" style={{color:'white'}}>for <span style={{color:'#D32F2F'}}>Codaisseur</span></h1>
-          {this.props.currentUser && <Link to="/logout"><input type="button" value="LOGOUT"/></Link>}
+          {this.props.currentUser && 
+            <Link to="/logout"><input type="button" value="LOGOUT"/></Link>
+          }
         </header>
         
         
