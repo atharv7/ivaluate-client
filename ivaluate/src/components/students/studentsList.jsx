@@ -1,5 +1,5 @@
 import React, {PureComponent} from 'react'
-import {getStudents, createStudent} from '../../actions/students'
+import {getStudents, createStudent,editStudent} from '../../actions/students'
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 
@@ -10,14 +10,38 @@ class StudentsList extends PureComponent {
     }
   }
 
+
   renderStudent = (student) => {
+    const {editStudent} = this.props
+    const toggleForm = id => {
+      document.getElementById(id+'_editform')
+                            .style
+                            .display=(document.getElementById(id+'_editform')
+                                              .style
+                                              .display==='block')?'none':'block'
+    }
     return (<div>
       
           Batch #{student.batch}
           <br/>
           Name: {student.fullName} | Photo: {student.photo}
-            
-        
+            <br/><input
+              id={student.id + '_toggle'}
+              type="button" 
+              value="edit" 
+              onClick={
+                ()=>toggleForm(student.id)} />
+
+          <form id={student.id+'_editform'} style={{display:'none'}}>
+      <input type="text" id={student.id + "_editfullname"} placeholder="Full Name"/>
+      <input type="text" id={student.id + "_editphoto"} placeholder="Photo"/>
+      <input type="button" value="Submit"
+        color="primary"
+        variant="raised"
+        onClick={()=>editStudent(student.id,document.getElementById(student.id+'_editfullname').value,document.getElementById(student.id+'_editphoto').value,student.batch)}
+        className="create-student"
+      />
+      </form>
       
             <br/>
         <hr/>
@@ -64,4 +88,4 @@ const mapStateToProps = state => ({
   students: state.students === null ? null : Object.values(state.students).sort((a, b) => b.id - a.id)
 })
 
-export default connect(mapStateToProps, {getStudents, createStudent})(StudentsList)
+export default connect(mapStateToProps, {getStudents, createStudent, editStudent})(StudentsList)

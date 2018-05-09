@@ -33,13 +33,29 @@ const updateStudents = students => ({
   export const createStudent = (fullname,photo,batch) => (dispatch, getState) => {
     const state = getState()
     const jwt = state.currentUser.jwt
-  
     if (isExpired(jwt)) return dispatch(logout())
+    document.getElementById("fullname").value=""
+    document.getElementById("photo").value=""
     
     request
       .post(`${baseUrl}/students`)
       .set('Authorization', `Bearer ${jwt}`)
       .send({ fullName: fullname, photo: photo, batch: batch})
       .then(result => dispatch(addStudent(result.body)))
+      .catch(err => console.error(err))
+  }
+
+  export const editStudent = (id,fullname,photo,batch) => (dispatch, getState) => {
+    const state = getState()
+    const jwt = state.currentUser.jwt
+    if (isExpired(jwt)) return dispatch(logout())
+    document.getElementById(id + "_editfullname").value=""
+    document.getElementById(id + "_editphoto").value=""
+    
+    request
+      .put(`${baseUrl}/students/${id}`)
+      .set('Authorization', `Bearer ${jwt}`)
+      .send({ fullName: fullname, photo: photo, batch: batch})
+      .then(result => dispatch(getStudents(result.body.batch)))
       .catch(err => console.error(err))
   }
