@@ -55,28 +55,31 @@ class StudentsList extends PureComponent {
               onClick={
                 ()=>deleteStudent(student.id)} />
 
-          <form id={student.id+'_editform'} style={{display:'none'}}>
+          <form id={student.id+'_editform'} style={{display:'none'}} onSubmit={
+            (e)=>{e.preventDefault()
+          editStudent(student.id,document.getElementById(student.id+'_editfullname').value,document.getElementById(student.id+'_editphoto').value,student.batch)}
+          }>
       <input type="text" id={student.id + "_editfullname"} placeholder="Full Name"/>
       <input type="text" id={student.id + "_editphoto"} placeholder="Photo"/>
-      <input type="button" value="Submit"
+      <input type="submit" value="Submit"
         color="primary"
         variant="raised"
-        onClick={()=>editStudent(student.id,document.getElementById(student.id+'_editfullname').value,document.getElementById(student.id+'_editphoto').value,student.batch)}
         className="create-student"
       />
       </form>
-      <form id={student.id+'_gradeform'} style={{display:'none'}}>
+      <form id={student.id+'_gradeform'} style={{display:'none'}} onSubmit={(e)=>{
+                                e.preventDefault()
+                                giveGrade(document.getElementById(student.id+'_editgrade').value,
+                                document.getElementById(student.id+'_editremark').value,student.id,teacherId|1)}}>
         <select id={student.id + "_editgrade"} placeholder="Select">
                 <option value="green">Green</option>
                 <option value="yellow">Yellow</option>
                 <option value="red">Red</option>
         </select>
         <textarea id={student.id+'_editremark'} placeholder="Remarks"></textarea>
-        <input type="button" value="Submit"
+        <input type="submit" value="Submit"
           color="primary"
           variant="raised"
-          onClick={()=>giveGrade(document.getElementById(student.id+'_editgrade').value,
-                                document.getElementById(student.id+'_editremark').value,student.id,teacherId|1)}
           className="create-student"
         />
       </form>
@@ -96,18 +99,22 @@ class StudentsList extends PureComponent {
 
     return (<div><div className="outer-paper">
     <h1>Batch #{this.props.match.params.id}</h1>
+      <form onSubmit={(e)=>{
+        e.preventDefault()
+        createStudent(
+          document.getElementById('fullname').value,
+          document.getElementById('photo').value,
+          document.getElementById('batch').value)
+      }}>
       <input type="hidden" id="batch" placeholder="Batch #" value={this.props.match.params.id} />
       <input type="text" id="fullname" placeholder="Full Name" />
       <input type="text" id="photo" placeholder="Photo" />
-      <input type="button" value="New Student"
+      <input type="submit" value="New Student"
         color="primary"
         variant="raised"
-        onClick={()=>createStudent(
-                              document.getElementById('fullname').value,
-                              document.getElementById('photo').value,
-                              document.getElementById('batch').value)}
         className="create-student"
       />
+      </form>
       <br/><br/>
       <input type="button" value="ASK A QUESTION" 
         onClick={()=>algorithm(this.props.match.params.id)}/>
