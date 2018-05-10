@@ -15,7 +15,7 @@ class App extends Component {
       <Router>
       <div className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
+          <Link to='/'><img src={logo} className="App-logo" alt="logo" /></Link>
           <h1 className="App-title" style={{color:'white'}}>for <span style={{color:'#D32F2F'}}>Codaisseur</span></h1>
           {this.props.currentUser && 
             <Link to="/logout"><input type="button" value="LOGOUT"/></Link>

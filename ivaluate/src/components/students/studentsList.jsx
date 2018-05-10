@@ -3,7 +3,8 @@ import {getStudents, createStudent,editStudent,deleteStudent} from '../../action
 import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 import './studentsList.css'
-import { giveGrade } from '../../actions/grades';
+import { giveGrade } from '../../actions/grades'
+import {algorithm} from '../../algorithm'
 
 class StudentsList extends PureComponent {
   componentWillMount() {
@@ -31,9 +32,9 @@ class StudentsList extends PureComponent {
     }
     return (<div className="StudentBox" key={student.id} style={{backgroundColor:student.lastGrade || 'grey'}}>
       
-          Batch #{student.batch}
           <br/>
-          <p>Name: {student.fullName} | Photo: {student.photo}</p>
+          <img src={student.photo} alt={student.fullName} style={{width:'100%'}}/>
+          <h1>{student.fullName}</h1>
             <br/>
                 <input
               id={student.id + '_grade'}
@@ -80,14 +81,12 @@ class StudentsList extends PureComponent {
         />
       </form>
       
-            <br/>
-        <hr/>
         </div>
       )
   }
 
   render() {
-    const {students, authenticated, createStudent} = this.props
+    const {students, authenticated, createStudent,algorithm} = this.props
     
     if (!authenticated) return (
 			<Redirect to="/home" />
@@ -96,6 +95,7 @@ class StudentsList extends PureComponent {
     if (students === null) return null
 
     return (<div><div className="outer-paper">
+    <h1>Batch #{this.props.match.params.id}</h1>
       <input type="hidden" id="batch" placeholder="Batch #" value={this.props.match.params.id} />
       <input type="text" id="fullname" placeholder="Full Name" />
       <input type="text" id="photo" placeholder="Photo" />
@@ -108,6 +108,9 @@ class StudentsList extends PureComponent {
                               document.getElementById('batch').value)}
         className="create-student"
       />
+      <br/><br/>
+      <input type="button" value="ASK A QUESTION" 
+        onClick={()=>algorithm(this.props.match.params.id)}/>
       <div className="create-student-form">
 
       </div>
@@ -123,7 +126,7 @@ const mapStateToProps = state => ({
   teacherId: state.currentUser.id,
   authenticated: state.currentUser !== null,
   users: state.users === null ? null : state.users,
-  students: state.students === null ? null : Object.values(state.students).sort((a, b) => b.id - a.id)
+  students: state.students === null ? null : Object.values(state.students).sort((a, b) => a.id - b.id)
 })
 
-export default connect(mapStateToProps, {getStudents, createStudent, editStudent,deleteStudent,giveGrade})(StudentsList)
+export default connect(mapStateToProps, {getStudents,algorithm, createStudent, editStudent,deleteStudent,giveGrade})(StudentsList)
