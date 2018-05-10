@@ -12,5 +12,6 @@ export const algorithm = (batch) => async function(dispatch,getState) {
                                 .send({batch,color})
                                 .then(result => {return result.body.fullName})
                                 .catch(err => console.error(err))
-    alert(theChosenOne)
+    if (!theChosenOne) return alert('No Students in this batch')
+    return alert(theChosenOne)
 }
