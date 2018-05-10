@@ -10,6 +10,7 @@ class StudentsList extends PureComponent {
   componentWillMount() {
     if (this.props.authenticated) {
       this.props.getStudents(this.props.match.params.id)
+      
     }
   }
 
@@ -17,6 +18,7 @@ class StudentsList extends PureComponent {
   renderStudent = (student,teacherId) => {
     const {editStudent,deleteStudent,giveGrade} = this.props
     const toggleForm = id => {
+      document.getElementById(id+'_gradeform').style.display='none'
       document.getElementById(id+'_editform')
                             .style
                             .display=(document.getElementById(id+'_editform')
@@ -24,6 +26,7 @@ class StudentsList extends PureComponent {
                                               .display==='block')?'none':'block'
     }
     const toggleGrade = id => {
+      document.getElementById(id+'_editform').style.display='none'
       document.getElementById(id+'_gradeform')
                             .style
                             .display=(document.getElementById(id+'_gradeform')
@@ -56,7 +59,9 @@ class StudentsList extends PureComponent {
                 ()=>deleteStudent(student.id)} />
 
           <form id={student.id+'_editform'} style={{display:'none'}} onSubmit={
-            (e)=>{e.preventDefault()
+            (e)=>{
+              e.target.style.display='none'
+              e.preventDefault()
           editStudent(student.id,document.getElementById(student.id+'_editfullname').value,document.getElementById(student.id+'_editphoto').value,student.batch)}
           }>
       <input type="text" id={student.id + "_editfullname"} placeholder="Full Name"/>
@@ -68,6 +73,7 @@ class StudentsList extends PureComponent {
       />
       </form>
       <form id={student.id+'_gradeform'} style={{display:'none'}} onSubmit={(e)=>{
+        e.target.style.display='none'
                                 e.preventDefault()
                                 giveGrade(document.getElementById(student.id+'_editgrade').value,
                                 document.getElementById(student.id+'_editremark').value,student.id,teacherId|1)}}>
@@ -117,11 +123,14 @@ class StudentsList extends PureComponent {
       </form>
       <br/><br/>
       <input type="button" value="ASK A QUESTION" 
-        onClick={()=>algorithm(this.props.match.params.id)}/>
-      <div className="create-student-form">
-
-      </div>
-</div><div>
+        onClick={()=>algorithm(this.props.match.params.id)}/><br/><br/>
+       { this.props.students.length>0 && <div> 
+        <div className="bar red" style={{width:(this.props.students.filter(x=>x.lastGrade==='red').length/students.length)*100+'%'}}></div>
+        <div className="bar yellow" style={{width:(this.props.students.filter(x=>x.lastGrade==='yellow').length/students.length)*100+'%'}}></div>
+        <div className="bar green" style={{width:(this.props.students.filter(x=>x.lastGrade==='green').length/students.length)*100+'%'}}></div>
+        <div className="bar grey" style={{width:(this.props.students.filter(x=>x.lastGrade==='Not Graded Yet!').length/students.length)*100+'%'}}/></div>}
+      </div> 
+      <div>
         {students.map(student => this.renderStudent(student,this.props.teacherId))}
       </div>
       </div>

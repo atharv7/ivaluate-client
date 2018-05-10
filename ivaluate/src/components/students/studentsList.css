@@ -8,3 +8,23 @@ margin-top:25px;
 margin-left:12.5px;
 margin-right:12.5px;
 }
+
+.bar {
+    display:inline-block;
+    height:25px;
+}
+.red {
+    background-color: red
+}
+
+.yellow {
+    background-color:yellow
+}
+
+.green {
+    background-color:green
+}
+
+.grey {
+    background-color: grey
+}
