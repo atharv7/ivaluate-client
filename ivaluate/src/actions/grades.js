@@ -1,6 +1,5 @@
 import * as request from 'superagent'
 import {baseUrl} from '../constants'
-import { UPDATE_STUDENTS } from './students';
 import {getStudents} from './students'
 export const GIVE_GRADE = 'GIVE_GRADE'
 
@@ -14,7 +13,7 @@ export const giveGrade = (color,remarks,student,teacher) => (dispatch, getState)
   }
   grade.date=new Date()
   async function getBatch(studentId){
-      const batch = await request
+      await request
         .get(`${baseUrl}/getbatch/${studentId}`)
         .set('Authorization', `Bearer ${jwt}`)
         .then(result=>{
@@ -26,8 +25,7 @@ export const giveGrade = (color,remarks,student,teacher) => (dispatch, getState)
     .send(grade)
     .set('Authorization', `Bearer ${jwt}`)
     .then(async function(result) {
-        
-        getBatch(parseInt(result.body.student))
+        getBatch(parseInt(result.body.student,10))
     })
     .catch(err => {console.log('error: ' + err)})
 }

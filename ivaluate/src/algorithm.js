@@ -11,7 +11,7 @@ export const algorithm = (batch) => async function(dispatch,getState) {
                                 .set('Authorization', `Bearer ${jwt}`)
                                 .send({batch,color})
                                 .then(result => {return result.body.fullName})
-                                .catch(err => console.error(err))
+                                .catch(err => console.log(err))
     if (!theChosenOne) return alert('No Students in this batch')
     return alert(theChosenOne)
 }
