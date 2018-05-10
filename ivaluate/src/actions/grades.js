@@ -13,18 +13,21 @@ export const giveGrade = (color,remarks,student,teacher) => (dispatch, getState)
       color,remarks,student,teacher
   }
   grade.date=new Date()
-  function getBatch(student){
-      const batch = request
-        .get(`${baseUrl}/students/${student}`)
-        .then(result=>{alert(result.batch)})
+  async function getBatch(studentId){
+      const batch = await request
+        .get(`${baseUrl}/getbatch/${studentId}`)
+        .set('Authorization', `Bearer ${jwt}`)
+        .then(result=>{
+            dispatch(getStudents(result.body.student.batch))
+        })
   }
   request
     .post(`${baseUrl}/students/${student}/grades`)
     .send(grade)
     .set('Authorization', `Bearer ${jwt}`)
-    .then(result => {
-        const batchId = getBatch(result.body.student)
-        dispatch(getStudents(batchId))
+    .then(async function(result) {
+        
+        getBatch(parseInt(result.body.student))
     })
     .catch(err => {console.log('error: ' + err)})
 }

@@ -11,7 +11,7 @@ const addStudent = student => ({
     payload: student
   })
 
-const updateStudents = students => ({
+export const updateStudents = students => ({
     type: UPDATE_STUDENTS,
     payload: students
 })
