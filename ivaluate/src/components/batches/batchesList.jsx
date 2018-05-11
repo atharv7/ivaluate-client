@@ -5,6 +5,16 @@ import {connect} from 'react-redux'
 import {Redirect} from 'react-router-dom'
 
 class BatchesList extends PureComponent {
+
+  state = {}
+
+  onChangeHandler = (e) => {
+    const {name,value} = e.target
+    this.setState ({
+      [name]: value
+    })
+  }
+
   componentWillMount() {
     if (this.props.authenticated) {
       if (this.props.batches === null) this.props.getBatches()
@@ -39,15 +49,15 @@ class BatchesList extends PureComponent {
     if (batches === null) return null
 
     return (<div><div className="outer-paper">
-      <input type="number" id="batch" placeholder="Batch #" />
-      <input type="date" id="starts" placeholder="Starts" />
-      <input type="date" id="ends" placeholder="Ends" />
+      <input type="number" name="batch" placeholder="Batch #" onChange={this.onChangeHandler} value={this.state.batch || ''} />
+      <input type="date" name="starts" placeholder="Starts" onChange={this.onChangeHandler} value={this.state.starts || ''}/>
+      <input type="date" name="ends" placeholder="Ends" onChange={this.onChangeHandler} value={this.state.ends || ''}/>
       <input type="button" value="New Batch"
         color="primary"
         variant="raised"
-        onClick={()=>createBatch(document.getElementById('batch').value,
-                              document.getElementById('starts').value,
-                              document.getElementById('ends').value)}
+        onClick={()=>createBatch(this.state.batch,
+                              this.state.starts,
+                              this.state.ends)}
         className="create-batch"
       />
       <div className="create-batch-form">

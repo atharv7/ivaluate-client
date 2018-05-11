@@ -34,8 +34,7 @@ export const updateStudents = students => ({
     const state = getState()
     const jwt = state.currentUser.jwt
     if (isExpired(jwt)) return dispatch(logout())
-    document.getElementById("fullname").value=""
-    document.getElementById("photo").value=""
+
     
     request
       .post(`${baseUrl}/students`)
@@ -49,8 +48,6 @@ export const updateStudents = students => ({
     const state = getState()
     const jwt = state.currentUser.jwt
     if (isExpired(jwt)) return dispatch(logout())
-    document.getElementById(id + "_editfullname").value=""
-    document.getElementById(id + "_editphoto").value=""
     
     request
       .put(`${baseUrl}/students/${id}`)

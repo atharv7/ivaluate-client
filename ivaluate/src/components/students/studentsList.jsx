@@ -7,6 +7,28 @@ import { giveGrade } from '../../actions/grades'
 import {algorithm} from '../../algorithm'
 
 class StudentsList extends PureComponent {
+  state = {} // setup empty state
+
+  //onClickToggleButtons
+  toggleOnClick = (e) => {
+    const {id} = e.target
+    if(this.state[id]==='block'){
+    this.setState({
+      [id]: 'none'
+    }) } else {
+    this.setState({
+      [id]: 'block'
+    })
+  }
+  }
+
+  onChangeHandler = (e) => {
+    const {name,value} = e.target
+    this.setState ({
+      [name]: value
+    })
+  }
+ 
   componentWillMount() {
     if (this.props.authenticated) {
       this.props.getStudents(this.props.match.params.id)
@@ -16,23 +38,9 @@ class StudentsList extends PureComponent {
 
 
   renderStudent = (student,teacherId) => {
+    
     const {editStudent,deleteStudent,giveGrade} = this.props
-    const toggleForm = id => {
-      document.getElementById(id+'_gradeform').style.display='none'
-      document.getElementById(id+'_editform')
-                            .style
-                            .display=(document.getElementById(id+'_editform')
-                                              .style
-                                              .display==='block')?'none':'block'
-    }
-    const toggleGrade = id => {
-      document.getElementById(id+'_editform').style.display='none'
-      document.getElementById(id+'_gradeform')
-                            .style
-                            .display=(document.getElementById(id+'_gradeform')
-                                              .style
-                                              .display==='block')?'none':'block'
-    }
+    
     return (<div className="StudentBox" key={student.id} style={{backgroundColor:student.lastGrade || 'grey'}}>
       
           <br/>
@@ -43,14 +51,12 @@ class StudentsList extends PureComponent {
               id={student.id + '_grade'}
               type="button" 
               value="grade" 
-              onClick={
-                ()=>toggleGrade(student.id)} />
+              onClick={this.toggleOnClick} />
                 <input
               id={student.id + '_toggle'}
               type="button" 
               value="edit" 
-              onClick={
-                ()=>toggleForm(student.id)} />
+              onClick={this.toggleOnClick} />
                 <input
               id={student.id + '_delete'}
               type="button" 
@@ -58,31 +64,32 @@ class StudentsList extends PureComponent {
               onClick={
                 ()=>deleteStudent(student.id)} />
 
-          <form id={student.id+'_editform'} style={{display:'none'}} onSubmit={
+          <form id={student.id+'_editform'} style={{display:this.state[student.id + '_toggle'] || 'none'}} onSubmit={
             (e)=>{
               e.target.style.display='none'
               e.preventDefault()
-          editStudent(student.id,document.getElementById(student.id+'_editfullname').value,document.getElementById(student.id+'_editphoto').value,student.batch)}
+          editStudent(student.id,this.state[student.id+'_editfullname'],this.state[student.id+'_editphoto'],student.batch)}
           }>
-      <input type="text" id={student.id + "_editfullname"} placeholder="Full Name"/>
-      <input type="text" id={student.id + "_editphoto"} placeholder="Photo"/>
+      <input type="text" name={student.id + "_editfullname"} placeholder="Full Name" onChange={this.onChangeHandler} value={this.state[this.id]}/>
+      <input type="text" name={student.id + "_editphoto"} placeholder="Photo" onChange={this.onChangeHandler} value={this.state[this.id]}/>
       <input type="submit" value="Submit"
         color="primary"
         variant="raised"
         className="create-student"
       />
       </form>
-      <form id={student.id+'_gradeform'} style={{display:'none'}} onSubmit={(e)=>{
-        e.target.style.display='none'
+      <form id={student.id+'_gradeform'} style={{display:this.state[student.id + '_grade'] || 'none'}} onSubmit={(e)=>{
+                                this.setState({[student.id+'_grade']:'none'})
                                 e.preventDefault()
-                                giveGrade(document.getElementById(student.id+'_editgrade').value,
-                                document.getElementById(student.id+'_editremark').value,student.id,teacherId|1)}}>
-        <select id={student.id + "_editgrade"} placeholder="Select">
+                                giveGrade(this.state[student.id+'_editgrade'] || student.lastGrade,
+                                this.state[student.id+'_editremark'] || '',student.id,teacherId|1)}}>
+        <select name={student.id + "_editgrade"} placeholder="Select" onChange={this.onChangeHandler} value={this.state[this.name]}>
+                <option value="Not Yet Graded!">===select===</option>
                 <option value="green">Green</option>
                 <option value="yellow">Yellow</option>
                 <option value="red">Red</option>
         </select>
-        <textarea id={student.id+'_editremark'} placeholder="Remarks"></textarea>
+        <textarea name={student.id+'_editremark'} placeholder="Remarks" onChange={this.onChangeHandler}></textarea>
         <input type="submit" value="Submit"
           color="primary"
           variant="raised"
@@ -96,7 +103,6 @@ class StudentsList extends PureComponent {
 
   render() {
     const {students, authenticated, createStudent,algorithm} = this.props
-    
     if (!authenticated) return (
 			<Redirect to="/home" />
 		)
@@ -104,13 +110,13 @@ class StudentsList extends PureComponent {
     if (students === null) return null
 
     return (<div>
-      <div id="myModal" className="modal" onClick={()=>document.getElementById('myModal').style.display='none'}>
+      <div id="myModal" className="modal" onClick={()=>this.setState({modeldisplay:'none'})} style={{display:this.state.modeldisplay ||'none'}}>
 
 
       <div className="modal-content">
-        <span className="close" onClick={()=>document.getElementById('myModal').style.display='none'}>&times;</span>
-        <img alt="randomImage" id="randomImage" src="" style={{maxWidth:'500px'}} />
-        <h2 id="randomName" style={{margin:'auto'}}>&nbsp;</h2>
+        <span className="close" onClick={()=>this.setState({modeldisplay: 'none'})}>&times;</span>
+        <img alt="randomImage" id="randomImage" src={this.state.randomImage || ''} style={{maxWidth:'500px'}} />
+        <h2 id="randomName" style={{margin:'auto'}}>{this.state.randomName || ''}</h2>
       </div>
 
       </div>
@@ -119,13 +125,12 @@ class StudentsList extends PureComponent {
       <form onSubmit={(e)=>{
         e.preventDefault()
         createStudent(
-          document.getElementById('fullname').value,
-          document.getElementById('photo').value,
-          document.getElementById('batch').value)
+          this.state.fullname || '',
+          this.state.photo || '',
+          this.props.match.params.id)
       }}>
-      <input type="hidden" id="batch" placeholder="Batch #" value={this.props.match.params.id} />
-      <input type="text" id="fullname" placeholder="Full Name" />
-      <input type="text" id="photo" placeholder="Photo" />
+      <input type="text" name="fullname" placeholder="Full Name" onChange={this.onChangeHandler} />
+      <input type="text" name="photo" placeholder="Photo" onChange={this.onChangeHandler}/>
       <input type="submit" value="New Student"
         color="primary"
         variant="raised"
@@ -135,7 +140,11 @@ class StudentsList extends PureComponent {
       <br/><br/>
       
       <input type="button" value="ASK A QUESTION" 
-        onClick={()=>algorithm(this.props.match.params.id)}/><br/><br/>
+        onClick={async () => {
+          const theChosenOne = await algorithm(this.props.match.params.id)
+          if(!theChosenOne) return null
+          this.setState({randomImage:theChosenOne.photo,randomName:theChosenOne.fullName,modeldisplay:'block'})
+          }}/><br/><br/>
        { 
         this.props.students.length>0 && 
         <div> 
