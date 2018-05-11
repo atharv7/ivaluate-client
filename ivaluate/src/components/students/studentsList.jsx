@@ -66,7 +66,7 @@ class StudentsList extends PureComponent {
 
           <form id={student.id+'_editform'} style={{display:this.state[student.id + '_toggle'] || 'none'}} onSubmit={
             (e)=>{
-              e.target.style.display='none'
+              this.setState({[student.id+'_toggle']:'none'})
               e.preventDefault()
           editStudent(student.id,this.state[student.id+'_editfullname'],this.state[student.id+'_editphoto'],student.batch)}
           }>
@@ -129,8 +129,8 @@ class StudentsList extends PureComponent {
           this.state.photo || '',
           this.props.match.params.id)
       }}>
-      <input type="text" name="fullname" placeholder="Full Name" onChange={this.onChangeHandler} />
-      <input type="text" name="photo" placeholder="Photo" onChange={this.onChangeHandler}/>
+      <input type="text" name="fullname" placeholder="Full Name" onChange={this.onChangeHandler} value={this.state.fullname}/>
+      <input type="text" name="photo" placeholder="Photo" onChange={this.onChangeHandler} value={this.state.photo}/>
       <input type="submit" value="New Student"
         color="primary"
         variant="raised"
