@@ -109,8 +109,8 @@ class StudentsList extends PureComponent {
 
       <div className="modal-content">
         <span className="close" onClick={()=>document.getElementById('myModal').style.display='none'}>&times;</span>
-        <img id="randomImage" src="" style={{maxWidth:'500px'}} />
-        <h2 id="randomName" style={{margin:'auto'}}></h2>
+        <img alt="randomImage" id="randomImage" src="" style={{maxWidth:'500px'}} />
+        <h2 id="randomName" style={{margin:'auto'}}>&nbsp;</h2>
       </div>
 
       </div>
