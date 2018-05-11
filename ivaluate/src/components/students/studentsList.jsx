@@ -103,7 +103,18 @@ class StudentsList extends PureComponent {
 
     if (students === null) return null
 
-    return (<div><div className="outer-paper">
+    return (<div>
+      <div id="myModal" className="modal" onClick={()=>document.getElementById('myModal').style.display='none'}>
+
+
+      <div className="modal-content">
+        <span className="close" onClick={()=>document.getElementById('myModal').style.display='none'}>&times;</span>
+        <img id="randomImage" src="" style={{maxWidth:'500px'}} />
+        <h2 id="randomName" style={{margin:'auto'}}></h2>
+      </div>
+
+      </div>
+    <div className="outer-paper">
     <h1>Batch #{this.props.match.params.id}</h1>
       <form onSubmit={(e)=>{
         e.preventDefault()
@@ -122,13 +133,18 @@ class StudentsList extends PureComponent {
       />
       </form>
       <br/><br/>
+      
       <input type="button" value="ASK A QUESTION" 
         onClick={()=>algorithm(this.props.match.params.id)}/><br/><br/>
-       { this.props.students.length>0 && <div> 
-        <div className="bar red" style={{width:(this.props.students.filter(x=>x.lastGrade==='red').length/students.length)*100+'%'}}></div>
-        <div className="bar yellow" style={{width:(this.props.students.filter(x=>x.lastGrade==='yellow').length/students.length)*100+'%'}}></div>
-        <div className="bar green" style={{width:(this.props.students.filter(x=>x.lastGrade==='green').length/students.length)*100+'%'}}></div>
-        <div className="bar grey" style={{width:(this.props.students.filter(x=>x.lastGrade==='Not Graded Yet!').length/students.length)*100+'%'}}/></div>}
+       { 
+        this.props.students.length>0 && 
+        <div> 
+          <div className="bar red" style={{width:(this.props.students.filter(x=>x.lastGrade==='red').length/students.length)*100+'%'}}></div>
+          <div className="bar yellow" style={{width:(this.props.students.filter(x=>x.lastGrade==='yellow').length/students.length)*100+'%'}}></div>
+          <div className="bar green" style={{width:(this.props.students.filter(x=>x.lastGrade==='green').length/students.length)*100+'%'}}></div>
+          <div className="bar grey" style={{width:(this.props.students.filter(x=>x.lastGrade==='Not Graded Yet!').length/students.length)*100+'%'}}/>
+        </div>
+      }
       </div> 
       <div>
         {students.map(student => this.renderStudent(student,this.props.teacherId))}

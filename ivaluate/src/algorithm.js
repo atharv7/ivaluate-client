@@ -10,8 +10,11 @@ export const algorithm = (batch) => async function(dispatch,getState) {
                                 .post(`${baseUrl}/randomstudent`)
                                 .set('Authorization', `Bearer ${jwt}`)
                                 .send({batch,color})
-                                .then(result => {return result.body.fullName})
+                                .then(result => {return result.body})
                                 .catch(err => console.log(err))
     if (!theChosenOne) return alert('No Students in this batch')
-    return alert(theChosenOne)
+    document.getElementById('randomImage').setAttribute('src',theChosenOne.photo)
+    document.getElementById('randomName').innerText=theChosenOne.fullName
+    document.getElementById('myModal').style.display='block'
+
 }
