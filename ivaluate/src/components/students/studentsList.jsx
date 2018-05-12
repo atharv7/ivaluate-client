@@ -17,7 +17,8 @@ class StudentsList extends PureComponent {
       [id]: 'none'
     }) } else {
     this.setState({
-      [id]: 'block'
+      [id]: 'block',
+      [(id.split('_')[1]==='toggle')?id.split('_')[0]+'_grade':id.split('_')[0]+'_toggle']: 'none'
     })
   }
   }
@@ -84,7 +85,7 @@ class StudentsList extends PureComponent {
                                 giveGrade(this.state[student.id+'_editgrade'] || student.lastGrade,
                                 this.state[student.id+'_editremark'] || '',student.id,teacherId|1)}}>
         <select name={student.id + "_editgrade"} placeholder="Select" onChange={this.onChangeHandler} value={this.state[this.name]}>
-                <option value="Not Yet Graded!">===select===</option>
+                <option value={student.lastGrade}>===select===</option>
                 <option value="green">Green</option>
                 <option value="yellow">Yellow</option>
                 <option value="red">Red</option>
