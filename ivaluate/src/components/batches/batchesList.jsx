@@ -23,49 +23,59 @@ class BatchesList extends PureComponent {
 
   renderBatch = (batch) => {
 
-    return (<div>
-      
-          Batch #{batch.batch}
-          <br/>
-          Starts: {batch.starts} | Ends: {batch.ends}
-            
-        
-      
-            <br/>
+    return (
+      <div>
+        Batch #{batch.batch}
+        <br/>
+        Starts: {batch.starts} | Ends: {batch.ends}
+        <br/>
         <input type="button" value="VIEW"
           size="small"
           onClick={() => {this.props.history.push(`/batches/${batch.batch}`)}}
         /><hr/>
-        </div>
-      )
+      </div>
+    )
   }
 
   render() {
     const {batches, authenticated, createBatch} = this.props
-    if (!authenticated) return (
-			<Redirect to="/home" />
-		)
 
+    if (!authenticated) return (<Redirect to="/home" />)
+    
     if (batches === null) return null
-
-    return (<div><div className="outer-paper">
-      <input type="number" name="batch" placeholder="Batch #" onChange={this.onChangeHandler} value={this.state.batch || ''} />
-      <input type="date" name="starts" placeholder="Starts" onChange={this.onChangeHandler} value={this.state.starts || ''}/>
-      <input type="date" name="ends" placeholder="Ends" onChange={this.onChangeHandler} value={this.state.ends || ''}/>
-      <input type="button" value="New Batch"
-        color="primary"
-        variant="raised"
-        onClick={()=>createBatch(this.state.batch,
-                              this.state.starts,
-                              this.state.ends)}
-        className="create-batch"
-      />
-      <div className="create-batch-form">
-
-      </div>
-</div><div>
-        {batches.map(batch => this.renderBatch(batch))}
-      </div>
+    
+    return (
+      <div>
+        <input
+          type="number"
+          name="batch"
+          placeholder="Batch #"
+          onChange={this.onChangeHandler}
+          value={this.state.batch || ''} 
+        />
+        <input
+          type="date"
+          name="starts"
+          placeholder="Starts"
+          onChange={this.onChangeHandler}
+          value={this.state.starts || ''}
+        />
+        <input
+          type="date"
+          name="ends"
+          placeholder="Ends"
+          onChange={this.onChangeHandler}
+          value={this.state.ends || ''}
+        />
+        <input
+          type="button"
+          value="New Batch"
+          onClick={
+            ()=>createBatch(this.state.batch,this.state.starts,this.state.ends)}
+        />
+        <div>
+          {batches.map(batch => this.renderBatch(batch))}
+        </div>
       </div>
     )
   }

@@ -14,16 +14,13 @@ class SignupPage extends PureComponent {
             this.props.signup.success=false
             alert('Thank you! Please Login now!')
             return (
-            
             <Redirect to="/" />
 		)}
 
 		return (
 			<div>
 				<h1>Sign up</h1>
-
 				<SignupForm onSubmit={this.handleSubmit} />
-
 				<p style={{color:'red'}}>{ this.props.signup.error }</p>
 			</div>
 		)
