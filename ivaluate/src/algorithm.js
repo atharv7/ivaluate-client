@@ -12,8 +12,7 @@ export const algorithm = (batch) => async (dispatch,getState) => {
                     .then(result => {return result.body})
                     .catch(err => console.log(err))
     if (!allStudents) {
-        alert('No Students in this batch')
-        return ''
+        return null
     } 
 
     const studentsBucket = []

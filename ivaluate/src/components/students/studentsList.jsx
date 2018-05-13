@@ -143,9 +143,16 @@ class StudentsList extends PureComponent {
       <input type="button" value="ASK A QUESTION" 
         onClick={async () => {
           const theChosenOne = await algorithm(this.props.match.params.id)
-          if(!theChosenOne) return null
-          this.setState({randomImage:theChosenOne.photo,randomName:theChosenOne.fullName,modeldisplay:'block'})
-          }}/><br/><br/>
+          if(!theChosenOne) {
+            alert('No students in this batch!')
+            return null
+          }
+          this.setState({
+            randomImage:theChosenOne.photo,
+            randomName:theChosenOne.fullName,
+            modeldisplay:'block'})
+          }}/>
+          <br/><br/>
        { 
         this.props.students.length>0 && 
         <div> 
